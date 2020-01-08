@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: javaapp
+  name: javaapp
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: javaapp
+  template:
+    metadata:
+      labels:
+        name: javaapp
+    spec:
+      containers:
+      - image: bsarathkumar42/javaapp:1
+        name: javaapp
+        ports:
+        - name: javaapp
+          containerPort: 8080  
+---
+# Node Port Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: javaapp
+  name: javaapp
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    name: javaapp
+
